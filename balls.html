@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal Electronics Solution - Home Appliances</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1200x400');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary {
+            background-color: #2c3e50;
+            margin-top: 0.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+        
+        .hot-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-img {
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Product Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .detail-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-images {
+            flex: 1;
+        }
+        
+        .main-image {
+            height: 300px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            background-color: #eee;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .detail-info {
+            flex: 1;
+        }
+        
+        .detail-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .detail-price {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-meta {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-meta span {
+            display: inline-block;
+            margin-right: 1rem;
+            color: #666;
+        }
+        
+        .detail-description {
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-features {
+            margin-bottom: 2rem;
+        }
+        
+        .detail-features h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-features ul {
+            list-style-position: inside;
+        }
+        
+        .detail-features li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .category-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .category-card i {
+            font-size: 2rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter p {
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .newsletter-form button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        
+        footer {
+            background-color: #1a252f;
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            margin-bottom: 2rem;
+        }
+        
+        .social-icons a {
+            color: white;
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .copyright {
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Nepal <span>Electronics</span> Solution</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#"><i class="fas fna-shopping-cart"></i> Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Premium Home Appliances in Nepal</h1>
+        <p>Discover the latest collection of high-quality home appliances at affordable prices with nationwide delivery.</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </section>
+    
+    <div class="container">
+        <h2 class="section-title">Our Product Categories</h2>
+        <div class="categories">
+            <div class="category-card">
+                <i class="fas fa-blender"></i>
+                <h3>Kitchen Appliances</h3>
+                <p>Blenders, Microwaves, Toasters & more</p>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-fan"></i>
+                <h3>Cooling & Heating</h3>
+                <p>ACs, Fans, Heaters & Coolers</p>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-tshirt"></i>
+                <h3>Laundry</h3>
+                <p>Washing Machines, Dryers & Irons</p>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-tv"></i>
+                <h3>Entertainment</h3>
+                <p>TVs, Sound Systems & Media Players</p>
+            </div>
+        </div>
+        
+        <h2 class="section-title" id="products">Hot Products</h2>
+        <div class="hot-products" id="product-container">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Product Detail Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="detail-header">
+                <div class="detail-images">
+                    <div class="main-image" id="mainImage">
+                        <!-- Main product image will go here -->
+                    </div>
+                    <div class="thumbnail-container" id="thumbnails">
+                        <!-- Thumbnails will go here -->
+                    </div>
+                </div>
+                
+                <div class="detail-info">
+                    <h1 class="detail-title" id="detailTitle">Product Name</h1>
+                    <div class="detail-price" id="detailPrice">NRP 00,000</div>
+                    
+                    <div class="detail-meta">
+                        <span><i class="fas fa-box"></i> <strong>Brand:</strong> <span id="detailBrand">Brand</span></span>
+                        <span><i class="fas fa-barcode"></i> <strong>Model:</strong> <span id="detailModel">Model</span></span>
+                        <span><i class="fas fa-star"></i> <strong>Rating:</strong> <span id="detailRating">4.5</span>/5</span>
+                    </div>
+                    
+                    <div class="detail-description" id="detailDescription">
+                        Product description will go here.
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn" id="addToCart">Add to Cart</button>
+                        <button class="btn btn-secondary" id="buyNow">Buy Now</button>
+                    </div>
+                    
+                    <div class="detail-features">
+                        <h3>Key Features</h3>
+                        <ul id="detailFeatures">
+                            <!-- Features will be added here by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="newsletter">
+        <h2>Subscribe to Our Newsletter</h2>
+        <p>Get the latest updates on new products, special offers, and home appliance tips directly to your inbox.</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email address">
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 Nepal Electronics Solution. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                title: "Smart Inverter Refrigerator",
+                price: "NRP 85,999",
+                brand: "Samsung",
+                model: "RT56K7040SL",
+                rating: 4.7,
+                description: "520L Double Door with AI Energy Saving Technology and Digital Inverter Compressor for quiet operation and energy efficiency. Features Twin Cooling Plus technology to keep food fresh for longer and SmartThings connectivity for remote monitoring.",
+                features: [
+                    "520 Liters Capacity",
+                    "Digital Inverter Compressor",
+                    "Twin Cooling Plus™",
+                    "All-around Cooling",
+                    "SmartThings Connectivity",
+                    "AI Energy Mode",
+                    "Metal Cooling"
+                ],
+                images: [
+                    "./assets/ref.jpg",
+                    "https://via.placeholder.com/600x600?text=Refrigerator+Inside",
+                    "https://via.placeholder.com/600x600?text=Refrigerator+Panel"
+                ],
+                category: "Kitchen Appliances"
+            },
+            {
+                id: 2,
+                title: "Front Load Washing Machine",
+                price: "NRP 72,500",
+                brand: "LG",
+                model: "FHM1207ZDL",
+                rating: 4.5,
+                description: "9kg capacity with Steam Wash and Allergy Care technology to remove up to 99.9% of allergens and bacteria. Features AI Direct Drive motor for optimized washing performance and TurboWash 360° for faster cleaning.",
+                features: [
+                    "9 kg Washing Capacity",
+                    "AI Direct Drive™ Motor",
+                    "Steam™ Allergy Care",
+                    "TurboWash™ 360°",
+                    "SmartThinQ™ Enabled",
+                    "6 Motion DD Technology",
+                    "Auto Dose"
+                ],
+                images: [
+                    "./assets/wash.jpg",
+                    "https://via.placeholder.com/600x600?text=Washing+Machine+Panel",
+                    "https://via.placeholder.com/600x600?text=Washing+Machine+Inside"
+                ],
+                category: "Laundry"
+            },
+            {
+                id: 3,
+                title: "Inverter Split AC",
+                price: "NRP 99,999",
+                brand: "Daikin",
+                model: "FTKF35TV16U",
+                rating: 4.8,
+                description: "1.5 Ton 5-Star with Wi-Fi Control and PM 2.5 Filter for clean and cool air with energy efficiency. Features Coanda airflow for wider air distribution and Econo mode for energy savings.",
+                features: [
+                    "1.5 Ton Capacity",
+                    "5 Star Energy Rating",
+                    "Wi-Fi Enabled",
+                    "PM 2.5 Filter",
+                    "Copper Condenser",
+                    "Coanda Airflow",
+                    "Econo Mode"
+                ],
+                images: [
+                    "./assets/ac.jpg",
+                    "https://via.placeholder.com/600x600?text=AC+Remote",
+                    "https://via.placeholder.com/600x600?text=AC+Installation"
+                ],
+                category: "Cooling & Heating"
+            },
+            {
+                id: 4,
+                title: "4K Ultra HD Smart TV",
+                price: "NRP 65,000",
+                brand: "Sony",
+                model: "X80J",
+                rating: 4.6,
+                description: "55-inch 4K Ultra HD Smart TV with Dolby Vision and Android TV for a premium viewing experience. Features 4K X-Reality PRO for enhanced picture quality and Google Assistant built-in for voice control.",
+                features: [
+                    "55-inch 4K Display",
+                    "Dolby Vision & Atmos",
+                    "Android TV",
+                    "4K X-Reality PRO",
+                    "Google Assistant Built-in",
+                    "TRILUMINOS Pro",
+                    "Game Mode"
+                ],
+                images: [
+                    "./assets/tv.jpg",
+                    "https://via.placeholder.com/600x600?text=TV+Side",
+                    "https://via.placeholder.com/600x600?text=TV+Remote"
+                ],
+                category: "Entertainment"
+            },
+            {
+                id: 5,
+                title: "Convection Microwave Oven",
+                price: "NRP 28,750",
+                brand: "Panasonic",
+                model: "NN-CT645BFDG",
+                rating: 4.3,
+                description: "32L capacity with Grill and 101 Auto Cook Menu for versatile cooking options in one appliance. Features Inverter Technology for even cooking and Eco mode for energy savings.",
+                features: [
+                    "32 Liters Capacity",
+                    "Convection + Grill",
+                    "101 Auto Cook Menu",
+                    "Inverter Technology",
+                    "Eco Mode",
+                    "Auto Defrost",
+                    "Child Lock"
+                ],
+                images: [
+                    "./assets/oven.webp",
+                    "https://via.placeholder.com/600x600?text=Microwave+Inside",
+                    "https://via.placeholder.com/600x600?text=Microwave+Panel"
+                ],
+                category: "Kitchen Appliances"
+            },
+            {
+                id: 6,
+                title: "Digital Air Fryer",
+                price: "NRP 12,999",
+                brand: "Philips",
+                model: "HD9252/90",
+                rating: 4.4,
+                description: "5.5L capacity with 8 Preset Cooking Functions for healthy frying with little to no oil. Features Rapid Air Technology for even cooking and dishwasher safe parts for easy cleaning.",
+                features: [
+                    "5.5 Liters Capacity",
+                    "8 Preset Menus",
+                    "Rapid Air Technology",
+                    "Digital Touch Screen",
+                    "Dishwasher Safe Parts",
+                    "Overheat Protection",
+                    "60 Min Timer"
+                ],
+                images: [
+                    "./assets/air.jpg",
+                    "https://via.placeholder.com/600x600?text=Air+Fryer+Top",
+                    "https://via.placeholder.com/600x600?text=Air+Fryer+Basket"
+                ],
+                category: "Kitchen Appliances"
+            },
+            {
+                id: 7,
+                title: "RO+UV Water Purifier",
+                price: "NRP 32,500",
+                brand: "Kent",
+                model: "Grand Plus",
+                rating: 4.5,
+                description: "7-Stage Purification with Mineral Guard Technology that retains essential natural minerals in water. Features Smart Alert System for filter change indication and 8 liters storage capacity.",
+                features: [
+                    "RO+UV+UF+TDS Control",
+                    "7 Stage Purification",
+                    "Mineral Guard Technology",
+                    "8 Liters Storage",
+                    "Smart Alert System",
+                    "Zero Water Wastage",
+                    "Wall Mountable"
+                ],
+                images: [
+                    "./assets/pure.jpg",
+                    "https://via.placeholder.com/600x600?text=Water+Purifier+Side",
+                    "https://via.placeholder.com/600x600?text=Water+Purifier+Tank"
+                ],
+                category: "Kitchen Appliances"
+            },
+            {
+                id: 8,
+                title: "Robot Vacuum Cleaner",
+                price: "NRP 45,000",
+                brand: "Xiaomi",
+                model: "Mi Robot Vacuum-Mop",
+                rating: 4.6,
+                description: "Smart Mapping with App Control and 2000Pa strong suction for thorough cleaning. Features LDS Laser Navigation for accurate mapping and multi-floor mapping capability.",
+                features: [
+                    "LDS Laser Navigation",
+                    "2000Pa Strong Suction",
+                    "App & Voice Control",
+                    "Multi-floor Mapping",
+                    "5200mAh Battery",
+                    "Mop Attachment Included",
+                    "Real-time Mapping"
+                ],
+                images: [
+                    "./assets/vacc.jpg",
+                    "https://via.placeholder.com/600x600?text=Robot+Vacuum+Side",
+                    "https://via.placeholder.com/600x600?text=Robot+Vacuum+Dock"
+                ],
+                category: "Home Appliances"
+            }
+        ];
+
+        // DOM Elements
+        const productContainer = document.getElementById('product-container');
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const mainImage = document.getElementById('mainImage');
+        const thumbnails = document.getElementById('thumbnails');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailPrice = document.getElementById('detailPrice');
+        const detailBrand = document.getElementById('detailBrand');
+        const detailModel = document.getElementById('detailModel');
+        const detailRating = document.getElementById('detailRating');
+        const detailDescription = document.getElementById('detailDescription');
+        const detailFeatures = document.getElementById('detailFeatures');
+
+        // Render Product Listing
+        function renderProducts() {
+            productContainer.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.dataset.id = product.id;
+                
+                productCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${product.images[0]}" alt="${product.title}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <div class="product-price">${product.price}</div>
+                        <p class="product-description">${product.description.substring(0, 100)}...</p>
+                        <div class="product-actions">
+                            <button class="btn">Add to Cart</button>
+                            <button class="btn btn-secondary view-more-btn">View Details</button>
+                        </div>
+                    </div>
+                `;
+                
+                productContainer.appendChild(productCard);
+                
+                // Add click event to view details button
+                productCard.querySelector('.view-more-btn').addEventListener('click', () => {
+                    showProductDetail(product.id);
+                });
+            });
+        }
+
+        // Show Product Detail in Modal
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id == productId);
+            
+            if (!product) return;
+            
+            // Update product details in modal
+            detailTitle.textContent = product.title;
+            detailPrice.textContent = product.price;
+            detailBrand.textContent = product.brand;
+            detailModel.textContent = product.model;
+            detailRating.textContent = product.rating;
+            detailDescription.textContent = product.description;
+            
+            // Update features
+            detailFeatures.innerHTML = '';
+            product.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                detailFeatures.appendChild(li);
+            });
+            
+            // Update main image
+            mainImage.innerHTML = `<img src="${product.images[0]}" alt="${product.title}">`;
+            
+            // Update thumbnails
+            thumbnails.innerHTML = '';
+            product.images.forEach((image, index) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = 'thumbnail';
+                thumbnail.innerHTML = `<img src="${image}" alt="${product.title} ${index + 1}">`;
+                thumbnail.addEventListener('click', () => {
+                    mainImage.innerHTML = `<img src="${image}" alt="${product.title}">`;
+                });
+                thumbnails.appendChild(thumbnail);
+            });
+            
+            // Show modal
+            productModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal
+        closeModal.addEventListener('click', () => {
+            productModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                productModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>

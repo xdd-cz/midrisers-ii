@@ -1,0 +1,8 @@
+// console.log("this is an alert", alert)
+
+//let cmf = confirm("are you sure");
+//console.log
+
+
+let prm=prompt("enter your age");
+console.log("your age is ", prm)
